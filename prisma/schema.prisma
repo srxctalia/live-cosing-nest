@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id        Int       @id @default(autoincrement())
+  title     String?   @db.VarChar(100)
+  author    String?   @db.VarChar(100)
+  category  String?   @db.VarChar(100)
+  year      String?   @db.VarChar(10)
+  stock Int @default(0)
+  price Int @default(0) 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model User {
+  id   Int @id @default(autoincrement())
+  name String? @db.VarChar(100)
+  username  String?   @unique @db.VarChar(50)
+  email     String?   @unique @db.VarChar(50)
+  password  String?   @db.Text
+  point Float @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model Voucher {
+  id Int @id @default(autoincrement())
+  name String?
+  value Float? @default(0)
+  activeDate DateTime?
+  ExpireDate DateTime?
+}
+
+model UserVoucher {
+  id  Int @id @default(autoincrement())
+  user_id Int 
+  voucher_id Int
+}
+
+model TCheckout {
+  id Int @id @default(autoincrement())
+  user_id Int
+  flag_voucher Boolean @default(false)
+  user_voucher_id Int @default(0)
+  amount Int
+  price Float
+  total_price Float
+}
